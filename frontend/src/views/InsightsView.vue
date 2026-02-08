@@ -666,27 +666,27 @@ watch(
 }
 
 .insights__panel--category {
-  background: linear-gradient(145deg, rgba(255, 214, 102, 0.35), rgba(255, 255, 255, 0.9));
+  background: linear-gradient(145deg, rgba(31, 122, 109, 0.18), rgba(255, 250, 242, 0.92));
 }
 
 .insights__panel--trend {
-  background: linear-gradient(145deg, rgba(148, 197, 255, 0.3), rgba(255, 255, 255, 0.9));
+  background: linear-gradient(145deg, rgba(194, 75, 58, 0.16), rgba(255, 250, 242, 0.92));
 }
 
 .insights__panel--cashflow {
-  background: linear-gradient(145deg, rgba(110, 231, 183, 0.28), rgba(255, 255, 255, 0.9));
+  background: linear-gradient(145deg, rgba(20, 90, 79, 0.18), rgba(255, 250, 242, 0.92));
 }
 
 .insights__panel--budget {
-  background: linear-gradient(145deg, rgba(250, 128, 114, 0.25), rgba(255, 255, 255, 0.9));
+  background: linear-gradient(145deg, rgba(236, 196, 133, 0.3), rgba(255, 250, 242, 0.92));
 }
 
 .insights__panel--networth {
-  background: linear-gradient(150deg, rgba(130, 174, 255, 0.35), rgba(255, 255, 255, 0.85));
+  background: linear-gradient(150deg, rgba(31, 122, 109, 0.22), rgba(255, 250, 242, 0.9));
 }
 
 .insights__panel--networth-trend {
-  background: linear-gradient(145deg, rgba(196, 181, 253, 0.28), rgba(255, 255, 255, 0.9));
+  background: linear-gradient(145deg, rgba(95, 90, 82, 0.18), rgba(255, 250, 242, 0.92));
 }
 
 .panel-header {

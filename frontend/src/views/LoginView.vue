@@ -97,8 +97,11 @@ const friendlyError = computed(() => {
   border-radius: 1.5rem;
   padding: 2rem;
   box-shadow: var(--shadow-soft);
-  display: grid;
-  gap: 1rem;
+  border: 1px solid rgba(31, 27, 22, 0.08);
+}
+
+.auth__card h2 {
+  margin-block: 0;
 }
 
 .auth__form {
@@ -120,6 +123,7 @@ const friendlyError = computed(() => {
     color: var(--surface);
     font-weight: 600;
     cursor: pointer;
+    box-shadow: 0 10px 20px rgba(20, 90, 79, 0.2);
   }
 }
 
@@ -132,5 +136,6 @@ const friendlyError = computed(() => {
   border-radius: 0.75rem;
   background: rgba(239, 68, 68, 0.1);
   color: var(--danger);
+  margin-top: 1rem;
 }
 </style>

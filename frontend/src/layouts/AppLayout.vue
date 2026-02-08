@@ -2,7 +2,7 @@
   <div class="app">
     <header class="app__header">
       <div class="brand">
-        <span class="brand__logo">B</span>
+        <span class="brand__logo">₹</span>
         <div>
           <h1>Budgeter</h1>
           <p>Track income, plan expenses, and stay ahead.</p>

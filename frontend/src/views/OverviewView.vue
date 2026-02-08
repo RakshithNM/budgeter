@@ -4,18 +4,6 @@
       <div class="summary-card summary-card--month">
         <p class="label">Selected Month</p>
         <div class="month-picker">
-          <button type="button" class="nav-btn" @click="shiftMonth(-1)" aria-label="Previous month">
-            <svg aria-hidden="true" viewBox="0 0 24 24" class="nav-icon">
-              <path
-                d="M15.25 6.75 10 12l5.25 5.25"
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              />
-            </svg>
-          </button>
           <div class="month-picker__selects">
             <select v-model.number="selectedMonthValue">
               <option v-for="month in monthOptions" :key="month.value" :value="month.value">
@@ -28,19 +16,6 @@
               </option>
             </select>
           </div>
-          <button type="button" class="nav-btn" @click="shiftMonth(1)" aria-label="Next month">
-            <svg aria-hidden="true" viewBox="0 0 24 24" class="nav-icon">
-              <path
-                d="M8.75 6.75 14 12l-5.25 5.25"
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              />
-            </svg>
-          </button>
-          <span class="pill">{{ selectedMonth }}</span>
         </div>
       </div>
 
@@ -93,16 +68,6 @@
             </option>
           </select>
           <div class="spend-hint muted">Leave category empty to auto-assign from a payee rule.</div>
-          <div class="spend-form__inline">
-            <input
-              v-model="newSpendCategory"
-              type="text"
-              placeholder="New spend category (optional)"
-            />
-          </div>
-          <button type="button" class="ghost spend-form__inline-button" @click="handleAddSpendCategory">
-            Add category
-          </button>
           <input v-model="spendForm.payeeName" type="text" placeholder="Payee (optional)" />
           <div class="spend-form__row">
             <input
@@ -575,7 +540,6 @@ const spendForm = reactive({
   recurring: false,
   payeeName: ""
 });
-const newSpendCategory = ref("");
 const spendAmountInput = ref("");
 const spendAmountValue = ref<number | null>(null);
 const spendError = ref("");
@@ -674,12 +638,6 @@ const removeIncome = async (id: string) => {
   await budget.deleteIncome(id);
 };
 
-const handleAddSpendCategory = async () => {
-  if (!newSpendCategory.value.trim()) return;
-  const created = await budget.createCategory(newSpendCategory.value.trim());
-  spendForm.categoryId = created.id;
-  newSpendCategory.value = "";
-};
 
 const loadPayeeData = async () => {
   const [rules, renames] = await Promise.all([api.getPayeeRules(), api.getPayeeRenames()]);
@@ -773,8 +731,8 @@ const removeSpend = async (id: string) => {
 
 .overview__summary {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: minmax(240px, 400px) 1fr;
+  gap: 1.5rem;
+  grid-template-columns: minmax(240px, 280px) 1fr;
   align-items: start;
 }
 
@@ -806,7 +764,6 @@ h2 {
   padding: 1.5rem;
   box-shadow: var(--shadow-soft);
   display: grid;
-  gap: 1rem;
 }
 
 .summary-card--metrics {
@@ -845,35 +802,7 @@ h2 {
   background: #fff;
 }
 
-.nav-btn {
-  border: none;
-  border-radius: 999px;
-  padding: 0.45rem 0.9rem;
-  background: rgba(15, 23, 42, 0.08);
-  color: var(--text);
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 1.1rem;
-  line-height: 1;
-  display: grid;
-  place-items: center;
-}
 
-.nav-icon {
-  width: 1.1rem;
-  height: 1.1rem;
-}
-
-.nav-btn:hover {
-  background: rgba(15, 23, 42, 0.12);
-}
-
-.pill {
-  background: rgba(15, 23, 42, 0.08);
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.85rem;
-}
 
 .overview__card {
   background: var(--surface);
@@ -897,7 +826,7 @@ h2 {
 
 .muted {
   color: var(--muted-text);
-  margin-top: 0.4rem;
+  margin-block: 0.4rem;
 }
 
 .error {
@@ -915,11 +844,11 @@ h2 {
 
 .search-input {
   width: 100%;
-  margin-top: 1rem;
   padding: 0.6rem 0.8rem;
   border-radius: 0.9rem;
   border: 1px solid rgba(15, 23, 42, 0.15);
   font: inherit;
+  margin-top: 0.75rem;
 }
 
 .category-form {
@@ -1141,16 +1070,6 @@ h2 {
   gap: 0.75rem;
 }
 
-.spend-form__inline {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 0.75rem;
-}
-
-.spend-form__inline-button {
-  width: 100%;
-  justify-self: stretch;
-}
 
 .spend-list {
   margin-top: 1.25rem;

@@ -1,5 +1,6 @@
 <template>
   <section class="landing">
+    <div class="landing__glow"></div>
     <div class="landing__hero">
       <div>
         <p class="eyebrow">Personal finance, private by default</p>
@@ -37,6 +38,16 @@
   padding: 3rem clamp(1.5rem, 4vw, 4rem);
   display: grid;
   gap: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.landing__glow {
+  position: absolute;
+  inset: -20% 10% auto 10%;
+  height: 260px;
+  background: radial-gradient(circle, rgba(31, 122, 109, 0.22), transparent 65%);
+  pointer-events: none;
 }
 
 .landing__hero {
@@ -82,6 +93,7 @@ h1 {
   color: var(--surface);
   text-decoration: none;
   font-weight: 600;
+  box-shadow: 0 10px 20px rgba(20, 90, 79, 0.2);
 }
 
 .landing__card {
@@ -89,6 +101,7 @@ h1 {
   padding: 1.5rem;
   border-radius: 1.5rem;
   box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(31, 27, 22, 0.08);
 }
 
 .landing__card ul {
