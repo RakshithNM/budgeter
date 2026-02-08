@@ -4,7 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import argon2 from "argon2";
 import jwt from "jsonwebtoken";
 import speakeasy from "speakeasy";
 import qrcode from "qrcode";
@@ -120,7 +120,9 @@ app.post("/auth/setup", async (req, res, next) => {
       return;
     }
 
-    const passwordHash = await bcrypt.hash(password, 12);
+    const passwordHash = await argon2.hash(password, {
+      type: argon2.argon2id
+    });
     const user = await prisma.user.create({
       data: {
         email,
@@ -172,7 +174,7 @@ app.post("/auth/login", async (req, res, next) => {
       return;
     }
 
-    const valid = await bcrypt.compare(password, user.passwordHash);
+    const valid = await argon2.verify(user.passwordHash, password);
     if (!valid) {
       res.status(401).json({ error: "invalid credentials" });
       return;
@@ -328,35 +330,6 @@ app.get("/auth/me", authRequired, async (req, res) => {
 
 app.use(authRequired);
 
-app.get("/users", authRequired, async (_req, res, next) => {
-  try {
-    const users = await prisma.user.findMany({
-      orderBy: { createdAt: "desc" }
-    });
-    res.json(users);
-  } catch (error) {
-    next(error);
-  }
-});
-
-app.post("/users", authRequired, async (req, res, next) => {
-  try {
-    const { email, name } = req.body as { email?: string; name?: string };
-
-    if (!email) {
-      res.status(400).json({ error: "email is required" });
-      return;
-    }
-
-    const user = await prisma.user.create({
-      data: { email, name }
-    });
-
-    res.status(201).json(user);
-  } catch (error) {
-    next(error);
-  }
-});
 
 app.get("/categories", async (_req, res, next) => {
   try {
