@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  passwordHash String
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret  String?
+  createdAt DateTime @default(now())
+}
+
+model Category {
+  id        String         @id @default(uuid())
+  name      String         @unique
+  recurring Boolean        @default(false)
+  createdAt DateTime       @default(now())
+  budgets   MonthlyBudget[]
+  spends    Spend[]
+  payeeRules PayeeRule[]
+}
+
+model MonthlyBudget {
+  id         String   @id @default(uuid())
+  month      DateTime
+  amount     Int
+  targetAmount Int?
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([categoryId, month])
+  @@index([month])
+}
+
+model Spend {
+  id         String   @id @default(uuid())
+  amount     Int
+  notes      String?
+  recurring  Boolean  @default(false)
+  payeeName  String?
+  spentAt    DateTime
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@index([spentAt])
+  @@index([categoryId])
+}
+
+model Income {
+  id        String   @id @default(uuid())
+  amount    Int
+  notes     String?
+  receivedAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([receivedAt])
+}
+
+model PayeeRule {
+  id         String   @id @default(uuid())
+  matchText  String
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@index([categoryId])
+}
+
+model PayeeRename {
+  id        String   @id @default(uuid())
+  matchText String
+  renameTo  String
+  createdAt DateTime @default(now())
+}
+
+enum AccountType {
+  ASSET
+  LIABILITY
+}
+
+model Account {
+  id        String      @id @default(uuid())
+  name      String
+  type      AccountType
+  balance   Int
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  balances  AccountBalance[]
+
+  @@index([type])
+}
+
+model AccountBalance {
+  id        String   @id @default(uuid())
+  accountId String
+  account   Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  balance   Int
+  recordedAt DateTime @default(now())
+
+  @@index([accountId])
+  @@index([recordedAt])
+}
