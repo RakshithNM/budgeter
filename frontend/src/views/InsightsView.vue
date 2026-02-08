@@ -243,51 +243,45 @@ const buildCategoryChart = () => {
     categoryChart.destroy();
     categoryChart = null;
   }
-  if (!categoryChart) {
-    categoryChart = new Chart(categoryChartEl.value, {
-      type: "doughnut",
-      data: {
-        labels,
-        datasets: [
-          {
-            data,
-            backgroundColor: [
-              "#1d4ed8",
-              "#0f766e",
-              "#a21caf",
-              "#d97706",
-              "#16a34a",
-              "#e11d48",
-              "#64748b"
-            ]
-          }
-        ]
-      },
-      options: {
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: (context) => {
-                const label = context.label ?? "";
-                const value = typeof context.parsed === "number" ? context.parsed : 0;
-                return `${label}: ${formatCurrency(value)}`;
-              }
+  categoryChart = new Chart(categoryChartEl.value, {
+    type: "doughnut",
+    data: {
+      labels,
+      datasets: [
+        {
+          data,
+          backgroundColor: [
+            "#1d4ed8",
+            "#0f766e",
+            "#a21caf",
+            "#d97706",
+            "#16a34a",
+            "#e11d48",
+            "#64748b"
+          ]
+        }
+      ]
+    },
+    options: {
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (context) => {
+              const label = context.label ?? "";
+              const value = typeof context.parsed === "number" ? context.parsed : 0;
+              return `${label}: ${formatCurrency(value)}`;
             }
           }
-        },
-        animation: {
-          animateRotate: true,
-          animateScale: true,
-          duration: 900
         }
+      },
+      animation: {
+        animateRotate: true,
+        animateScale: true,
+        duration: 900
       }
-    });
-  } else {
-    categoryChart.data.labels = labels;
-    categoryChart.data.datasets[0].data = data;
-    categoryChart.update();
-  }
+    }
+  });
 };
 
 const buildTrendChart = () => {

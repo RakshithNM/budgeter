@@ -31,11 +31,30 @@ export const useBudgetStore = defineStore("budget", {
         return spentAt >= start && spentAt < end;
       });
     },
-    totalSpent() {
-      return this.spendsForMonth.reduce((sum, item) => sum + item.amount, 0);
+    totalSpent: (state) => {
+      const [year, month] = state.month.split("-").map(Number);
+      if (!year || !month) return state.spends.reduce((sum, item) => sum + item.amount, 0);
+      const start = new Date(Date.UTC(year, month - 1, 1));
+      const end = new Date(Date.UTC(year, month, 1));
+      return state.spends.reduce((sum, spend) => {
+        const spentAt = new Date(spend.spentAt);
+        return spentAt >= start && spentAt < end ? sum + spend.amount : sum;
+      }, 0);
     },
-    cashflow() {
-      return this.totalIncome - this.totalSpent;
+    cashflow: (state) => {
+      const totalIncome = state.incomes.reduce((sum, item) => sum + item.amount, 0);
+      const [year, month] = state.month.split("-").map(Number);
+      if (!year || !month) {
+        const totalSpent = state.spends.reduce((sum, item) => sum + item.amount, 0);
+        return totalIncome - totalSpent;
+      }
+      const start = new Date(Date.UTC(year, month - 1, 1));
+      const end = new Date(Date.UTC(year, month, 1));
+      const totalSpent = state.spends.reduce((sum, spend) => {
+        const spentAt = new Date(spend.spentAt);
+        return spentAt >= start && spentAt < end ? sum + spend.amount : sum;
+      }, 0);
+      return totalIncome - totalSpent;
     },
     rollingCashflowTotal: (state) => state.rollingCashflow,
     budgetByCategory: (state) => new Map(state.budgets.map((budget) => [budget.categoryId, budget]))
